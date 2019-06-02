@@ -201,6 +201,7 @@ version (Windows)
 /**
    Aligned allocator using OS-specific primitives, under a uniform API.
  */
+version (D_BetterC) {} else {
 struct AlignedMallocator
 {
     @system unittest { testAllocator!(() => typeof(this).instance); }
@@ -384,4 +385,5 @@ version(CRuntime_DigitalMars)
         if (m) assert(*cast(ulong*) m == 0X01234567_89ABCDEF);
         _aligned_free(m);
     }
+}
 }

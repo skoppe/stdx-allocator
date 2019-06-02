@@ -7,6 +7,11 @@ facilities, or import individual heap building blocks and assemble them.
 */
 module stdx.allocator.showcase;
 
+version (D_BetterC) {
+} else version = HasGc;
+
+version (HasGc):
+
 import stdx.allocator.building_blocks.fallback_allocator,
     stdx.allocator.gc_allocator,
     stdx.allocator.building_blocks.region;

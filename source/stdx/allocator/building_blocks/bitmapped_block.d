@@ -193,6 +193,13 @@ struct BitmappedBlock(size_t theBlockSize, uint theAlignment = platformAlignment
         assert(_blocks * blockSize >= capacity);
     }
 
+    static if (chooseAtRuntime == theBlockSize)
+    this(ubyte[] data, uint blockSize)
+    {
+        this._blockSize = blockSize;
+        this(data);
+    }
+
     /**
     If $(D ParentAllocator) is not $(D NullAllocator) and defines $(D
     deallocate), the destructor is defined to deallocate the block held.

@@ -223,6 +223,13 @@ Source: $(PHOBOSSRC std/experimental/_allocator)
 
 module stdx.allocator;
 
+version (D_BetterC) {
+} else {
+	version = HasGc;
+}
+
+version (HasGc):
+
 public import stdx.allocator.common,
     stdx.allocator.typed;
 
@@ -266,8 +273,8 @@ public import stdx.allocator.common,
 
 import std.range.primitives;
 import std.traits;
-import stdx.allocator.internal : Ternary;
 import std.typecons : Flag, Yes, No;
+import stdx.allocator.internal : Ternary;
 
 /**
 Dynamic allocator interface. Code that defines allocators ultimately implements
@@ -550,6 +557,7 @@ to be shared across threads, use $(D processAllocator) (below). By default,
 $(D theAllocator) ultimately fetches memory from $(D processAllocator), which
 in turn uses the garbage collected heap.
 */
+version (HasGc) {
 nothrow @safe @nogc @property IAllocator theAllocator()
 {
     auto p = _threadAllocator;
@@ -562,7 +570,7 @@ nothrow @safe @nogc @property void theAllocator(IAllocator a)
     assert(a);
     _threadAllocator = a;
 }
-
+}
 ///
 @system unittest
 {
